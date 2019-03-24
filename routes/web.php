@@ -14,8 +14,24 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/403',function (){
+    return view('403');
+});
 
-Auth::routes();
+Route::any('login','Admin\HomeController@login')->name('login');
+Route::get('logout','Admin\HomeController@logout')->name('logout');
+Route::get('/welcome', 'Admin\HomeController@welcome')->name('welcome');
+Route::get('/home', 'Admin\HomeController@index')->name('home');
 
-Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/welcome', 'HomeController@welcome')->name('welcome');
+//Auth::routes();
+Route::group(['middleware'=>'rbac'],function () use($router){
+
+
+    Route::resource('user','Admin\UserController');
+    Route::resource('role','Admin\RoleController');
+    Route::resource('jurisdiction','Admin\JurisdictionController');
+    Route::resource('client','Admin\ClientController');
+    Route::resource('classify','Admin\ClassifyController');
+
+});
+
