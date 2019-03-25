@@ -43,4 +43,5 @@ return [
 
     'HTTP'                  => ['ANY','GET','POST','PUT','DELETE','PATCH','HEAD','OPTIONS'],
     'important_grade'       => [1 => '普通',2 => '重要',3 => '非常重要'],
+    'important_grade_color' => [1 => 'primary',2 => 'warning',3 => 'danger'],
   ];

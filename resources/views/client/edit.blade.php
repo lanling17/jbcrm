@@ -27,7 +27,7 @@
                     </div>
                     @include('layouts.admin_hint')
                     <div class="ibox-content">
-                        <form action={{url('client/'.$info['id'])}} class="form-horizontal m-t" method="POST" enctype="multipart/form-data">
+                        <form action="{{url('client/'.$info['id'])}}" class="form-horizontal m-t" method="POST" enctype="multipart/form-data">
                           @csrf
                           <input type="hidden" name="_method" value="put"/>
                             <!-- 分类ID -->
@@ -48,13 +48,6 @@
                                     <input  name="name" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error" value="{{$info['name']}}">
                                 </div>
                             </div>
-                            <!-- 联系人 -->
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">联系人：</label>
-                                <div class="col-sm-8">
-                                    <input name="contacts" class="form-control" type="text" value="{{$info['contacts']}}">
-                                </div>
-                            </div>
                             <!-- 性别 -->
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">性别：</label>
@@ -69,25 +62,46 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- 邮箱 -->
+                            <!-- 年龄 -->
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">年龄：</label>
+                                <div class="col-sm-8">
+                                    <input name="age" class="form-control" type="number" value="{{$info['age']}}">
+                                </div>
+                            </div>
+                             <!-- 公司 -->
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">公司：</label>
+                                <div class="col-sm-8">
+                                    <input name="company" class="form-control" type="text" value="{{$info['company']}}">
+                                </div>
+                            </div>
+                             <!-- 职位 -->
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">职位：</label>
+                                <div class="col-sm-8">
+                                    <input name="position" class="form-control" type="text" value="{{$info['position']}}">
+                                </div>
+                            </div>
+                             <!-- 邮箱 -->
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">邮箱：</label>
                                 <div class="col-sm-8">
                                     <input name="email" class="form-control" type="email" value="{{$info['email']}}">
                                 </div>
                             </div>
-                            <!-- 联系电话 -->
+                             <!-- 联系人 -->
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">联系人：</label>
+                                <div class="col-sm-8">
+                                    <input name="contacts" class="form-control" type="text" value="{{$info['contacts']}}">
+                                </div>
+                            </div>
+                             <!-- 联系电话 -->
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">联系电话：</label>
                                 <div class="col-sm-8">
                                     <input name="phone" class="form-control" type="text" value="{{$info['phone']}}">
-                                </div>
-                            </div>
-                            <!-- 年龄 -->
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">年龄：</label>
-                                <div class="col-sm-8">
-                                    <input name="age" class="form-control" type="number" value="{{$info['age']}}">
                                 </div>
                             </div>
                             <!-- 公司外部标签 -->
@@ -160,7 +174,7 @@
                             <div class="form-group">
                                 <div class="col-sm-8 col-sm-offset-3">
                                     <button class="btn btn-primary" type="submit">提交</button>
-                                    <a class="btn btn-outline btn-default" href={{url("client")}} >返回</a>
+                                    <a class="btn btn-outline btn-default" href="javascript:history.go(-1)" >返回</a>
                                 </div>
                             </div>
                         </form>

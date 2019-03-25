@@ -19,6 +19,7 @@ class Rbac
      */
     public function handle($request, Closure $next)
     {
+        // return $next($request);
         //获取当前用户信息
         $uid = Auth::id();
         if (!$uid){

@@ -22,8 +22,8 @@ class ClientController extends Controller
     }
 
     //展示(单条)
-    public function show(){
-        return view('client.show');
+    public function show(Client $client){
+        return view('client.show',compact('client'));
     }
 
     //添加
@@ -41,6 +41,8 @@ class ClientController extends Controller
             'email' => 'required',
             'phone' => 'required',
             'age' => 'required',
+            'company' => 'required',
+            'position' => 'required',
             'out_lable' => 'required',
             'in_lable' => 'required',
             'nature' => 'required',
@@ -76,6 +78,8 @@ class ClientController extends Controller
             'email' => 'required',
             'phone' => 'required',
             'age' => 'required',
+            'company' => 'required',
+            'position' => 'required',
             'out_lable' => 'required',
             'in_lable' => 'required',
             'nature' => 'required',

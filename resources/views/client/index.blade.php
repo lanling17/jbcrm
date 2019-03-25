@@ -31,15 +31,15 @@
                                 <tr>
                                     <th >类别</th>
                                     <th>姓名</th>
-                                    <th>联系人</th>
                                     <th>性别</th>
-                                    <th>邮箱</th>
-                                    <th>联系电话</th>
-                                    <th>微信</th>
-                                    <th>公司外部标签</th>
-                                    <th>公司内部标签</th>
+                                    <th>年龄</th>
+                                    <th>公司</th>
+                                    <th>职位</th>
                                     <th>重要等级</th>
-                                    <th>所属</th>
+                                    <th>电话</th>
+                                    <th>邮箱</th>
+                                    <th>微信</th>
+                                    <!-- <th>所属</th> -->
                                     <th>操作</th>
                                 </tr>
                             </thead>
@@ -48,29 +48,33 @@
                                 <tr class="gradeC">
                                     <td>{{$v->classify}}</td>
                                     <td>{{$v->name}}</td>
-                                    <td>{{$v->contacts}}</td>
                                     <td>{{$v->sex ? '男' : '女'}}</td>
-                                    <td>{{$v->email}}</td>
+                                    <td>{{$v->age}}</td>
+                                     <td>{{$v->company}}</td>
+                                    <td>{{$v->position}}</td>
+                                    <td>
+                                        <span class="label label-{{config('hint.important_grade_color')[$v->important_grade]}}">{{config('hint.important_grade')[$v->important_grade]}}</span>
+                                    </td>
+                                    @if(Auth::id() == $v->created_id)
                                     <td>{{$v->phone}}</td>
+                                    <td>{{$v->email}}</td>
                                     <td>{{$v->wx_char}}</td>
-                                    <td>{{$v->out_lable}}</td>
-                                    <td>{{$v->in_lable}}</td>
-                                    <td>{{config('hint.important_grade')[$v->important_grade]}}</td>
-                                    <td>{{$v->created_user}}</td>
-                                    <!-- <td class="center">
-                                        @if($v->status == 1)
-                                            <span class="label label-info">正常</span>
-                                        @else
-                                            <span class="label label-danger">禁用</span>
-                                        @endif
-                                    </td> -->
+                                    @else
+                                    <td>****</td>
+                                    <td>****</td>
+                                    <td>****</td>
+                                    @endif
                                     <td class="center">
                                         <div class="btn-group">
                                             <button data-toggle="dropdown" class="btn btn-primary btn-xs dropdown-toggle">操作 <span class="caret"></span>
                                             </button>
                                             <ul class="dropdown-menu">
+                                                @if(Auth::id() == 1 || Auth::id() == $v->created_id)
+                                                <li><a href="{{url('client/'.$v->id)}}">详情</a></li>
+                                                @else
                                                 <li><a href="javascript:;">详情</a></li>
-                                                <li><a href={{url("client/$v->id/edit")}} class="font-bold">修改</a></li>
+                                                @endif
+                                                <li><a href="{{url('client/'.$v->id.'/edit')}}" class="font-bold">修改</a></li>
                                                 <!-- <li><a href="javascript:;" class="demo4">禁用</a></li> -->
                                                 <li class="divider"></li>
                                                 <li><a href="javascript:;" id="{{$v->id}}" class="delete" url="{{url('client/'.$v->id)}}">删除</a>
