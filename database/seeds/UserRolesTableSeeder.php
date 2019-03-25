@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Database\Seeder;
 use App\Models\UserRole;
 
@@ -13,11 +12,7 @@ class UserRolesTableSeeder extends Seeder
     public function run()
     {
         //
-        UserRole::insert([
-          'user_id' => 1,
-          'role_id' => 1,
-          'created_at' => date('Y-m-d H:i:s',time()),
-          'updated_at' => date('Y-m-d H:i:s',time()),
-        ]);
+        factory(UserRole::class,10)->create();
+        UserRole::find(1)->update(['user_id'=>1,'role_id'=>1]);
     }
 }

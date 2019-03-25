@@ -12,11 +12,7 @@ class RoleJurisdictionsTableSeeder extends Seeder
      */
     public function run()
     {
-      RoleJurisdiction::insert([
-        'role_id' => 1,
-        'jurisdiction_id' => 1,
-        'created_at' => date('Y-m-d H:i:s',time()),
-        'updated_at' => date('Y-m-d H:i:s',time()),
-      ]);
+      factory(RoleJurisdiction::class,10)->create();
+      RoleJurisdiction::find(1)->update(['role_id'=>1,'jurisdiction_id'=>1]);
     }
 }

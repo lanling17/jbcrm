@@ -55,7 +55,7 @@
                                     <td>
                                         <span class="label label-{{config('hint.important_grade_color')[$v->important_grade]}}">{{config('hint.important_grade')[$v->important_grade]}}</span>
                                     </td>
-                                    @if(Auth::id() == $v->created_id)
+                                    @if(Auth::id() == 1 || Auth::id() == $v->created_id)
                                     <td>{{$v->phone}}</td>
                                     <td>{{$v->email}}</td>
                                     <td>{{$v->wx_char}}</td>
