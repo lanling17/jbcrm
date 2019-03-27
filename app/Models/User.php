@@ -29,10 +29,10 @@ class User extends Authenticatable
     ];
 
     /**
-     * 用户的角色
+     * 用户与用户角色关系
      */
-    public function roles()
+    public function userRoles()
     {
-        return $this->belongsToMany('App\Models\Role');
+        return $this->hasMany('App\Models\UserRole');
     }
 }

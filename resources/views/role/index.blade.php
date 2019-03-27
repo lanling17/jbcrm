@@ -60,7 +60,7 @@
                                             <button data-toggle="dropdown" class="btn btn-primary btn-xs dropdown-toggle">操作 <span class="caret"></span>
                                             </button>
                                             <ul class="dropdown-menu">
-                                                <li><a href="javascript:;">详情</a></li>
+                                                <!-- <li><a href="javascript:;">详情</a></li> -->
                                                 <li><a href={{url("role/$v->id/edit")}} class="font-bold">修改</a></li>
                                                 <!-- <li><a href="javascript:;" class="demo4">禁用</a></li> -->
                                                 <li class="divider"></li>

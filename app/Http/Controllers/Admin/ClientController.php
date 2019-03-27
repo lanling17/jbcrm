@@ -12,13 +12,29 @@ use Auth;
 class ClientController extends Controller
 {
     //首页
-    public function index(){
-        $list = Client::paginate(20);
-        foreach ($list as $v){
-            $v->classify = Classify::find($v->classify_id)->name;
-            $v->created_user = User::find($v->created_id)->name;
+    public function index(Request $request){
+        $classify = Classify::all();
+        if ($request->all()){
+            $data['classify_id'] = $request->classify_id;
+            $data['name'] = $request->name;
+            if ($request->classify_id != 0 && $request->name != null){
+                $list = Client::where('classify_id',$request->classify_id)->where('name','LIKE','%'.$request->name.'%')->paginate(config('hint.a_num'));
+                $list->setPath(env('APP_URL').'/client?classify_id='.$data['classify_id'].'&name='.$data['name']);
+            }elseif($request->classify_id != 0 && $request->name == null){
+                $list = Client::where('classify_id',$request->classify_id)->paginate(config('hint.a_num'));
+                $list->setPath(env('APP_URL').'/client?classify_id='.$data['classify_id']);
+            }else{
+                $list = Client::where('name','LIKE','%'.$request->name.'%')->paginate(config('hint.a_num'));
+                $list->setPath(env('APP_URL').'/client?name='.$data['name']);
+            }
+
+        }else{
+            $data['classify_id'] = 0;
+            $data['name'] = null;
+            $list = Client::paginate(config('hint.a_num'));
         }
-        return view('client.index',compact('list',$list));
+
+        return view('client.index',compact('list','classify','data'));
     }
 
     //展示(单条)
@@ -105,5 +121,15 @@ class ClientController extends Controller
         }else{
             return back() -> with('hint',config('hint.del_failure'));
         }
+    }
+
+    //导入
+    public function import(){
+
+    }
+
+    //导出
+    public function export(){
+
     }
 }

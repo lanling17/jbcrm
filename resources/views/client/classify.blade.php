@@ -52,9 +52,9 @@
                                             <button data-toggle="dropdown" class="btn btn-primary btn-xs dropdown-toggle">操作 <span class="caret"></span>
                                             </button>
                                             <ul class="dropdown-menu">
-                                                <li><a href="javascript:;">详情</a></li>
+                                                <!-- <li><a href="javascript:;">详情</a></li> -->
                                                 <li><a class="font-bold cgedit" data-toggle="modal" data-target="#myModalMod" url="{{url('classify/'.$v->id)}}">修改</a></li>
-                                                <li><a href="javascript:;">禁用</a></li>
+                                                <!-- <li><a href="javascript:;">禁用</a></li> -->
                                                 <li class="divider"></li>
                                                 <li><a href="javascript:;" id="{{$v->id}}" class="delete" url="{{url('classify/'.$v->id)}}">删除</a>
                                                 </li>

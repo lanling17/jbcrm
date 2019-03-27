@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Models\Jurisdiction;
 use App\Models\RoleJurisdiction;
 use App\Models\UserRole;
+use App\Models\User;
 use Closure;
 use Auth;
 
@@ -27,6 +28,8 @@ class Rbac
         }
         //获取当前用户角色
         $rids = UserRole::getUserRoleId($uid);
+//        $userRoles = User::find(100)->userRoles;
+//        dd($userRoles);
         if (!$rids){
             return redirect('/403');
         }

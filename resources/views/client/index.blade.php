@@ -1,6 +1,10 @@
 @extends('layouts.admin')
 @section('title','客户列表')
 @section('content')
+<style type="text/css">
+    .juzhong{text-align: right;}
+    .dinwei{margin-top: 10px;}
+</style>
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="row">
             <div class="col-sm-12">
@@ -16,8 +20,8 @@
                             </a>
                             <ul class="dropdown-menu dropdown-user">
                                 <li><a href="{{url('client/create')}}">新增</a></li>
-                                <li><a href="#">导入</a></li>
-                                <li><a href="#">导出</a></li>
+                                <li><a href="#" data-toggle="modal" data-target="#excel_import">导入</a></li>
+                                <li><a href="{{route('client/export')}}">导出</a></li>
                             </ul>
                             <a class="close-link">
                                 <i class="fa fa-times"></i>
@@ -25,6 +29,24 @@
                         </div>
                     </div>
                     <div class="ibox-content">
+                      <form action="">
+                          <div class="form-group">
+                              <div class="col-sm-1 juzhong"><label class="dinwei">类別：</label></div>
+                              <div class="col-sm-2">
+                                  <select class="form-control" name="classify_id">
+                                      <option value="0">请选择分类</option>
+                                      @foreach($classify as $ify)
+                                      <option value="{{$ify->id}}"  {{$data['classify_id'] == $ify->id ? 'selected' : ''}}>{{$ify->name}}</option>
+                                      @endforeach
+                                  </select>
+                              </div>
+                              <div class="col-sm-1 juzhong"><label class="dinwei">姓名：</label></div>
+                              <div class="col-sm-2">
+                                  <input class="form-control" type="text" name="name" value="{{$data['name'] != null ? $data['name'] : ''}}">
+                              </div>
+                              <button class="btn btn-primary" type="submit">搜索</button>
+                          </div>
+                      </form>
                         @include('layouts.admin_hint')
                          <table class="table table-hover">
                             <thead>
@@ -46,7 +68,7 @@
                             <tbody>
                                @foreach($list as $v)
                                 <tr class="gradeC">
-                                    <td>{{$v->classify}}</td>
+                                    <td>{{$v->classify->name}}</td>
                                     <td>{{$v->name}}</td>
                                     <td>{{$v->sex ? '男' : '女'}}</td>
                                     <td>{{$v->age}}</td>
@@ -90,6 +112,35 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <!-- 弹框(导入) -->
+    <div class="modal inmodal" id="excel_import" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <form method="post" action="{{route('import')}}" class="form-horizontal m-t" enctype="multipart/form-data">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span>
+                    </button>
+                    <!-- <i class="fa fa-laptop modal-icon"></i> -->
+                    <h5 class="modal-title">导入</h5>
+                    <!-- <small class="font-bold">这里可以显示副标题。 -->
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">选择文件：</label>
+                        <div class="col-sm-8">
+                            <input  name="excel" class="form-control" type="file" aria-required="true" aria-invalid="true" class="error">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    {{ csrf_field() }}
+                    <button type="button" class="btn btn-white" data-dismiss="modal">取消</button>
+                    <button type="submit" class="btn btn-primary" >保存</button>
+                </div>
+            </div>
+            </form>
         </div>
     </div>
     @include('layouts.admin_delete')

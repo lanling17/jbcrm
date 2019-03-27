@@ -33,5 +33,10 @@ Route::group(['middleware'=>'rbac'],function () use($router){
     Route::resource('client','Admin\ClientController');
     Route::resource('classify','Admin\ClassifyController');
 
-});
+    Route::get('client/export','Admin\ClientController@export')->name('client/export');   //客户导出
+    Route::get('client/import','Admin\ClientController@import')->name('client/import');   //客户导入
+    //Excel控制器
+    Route::get('/export', 'Admin\ExcelController@export')->name('export');
+    Route::any('/import', 'Admin\ExcelController@import')->name('import');
 
+});
