@@ -21,7 +21,7 @@
                             <ul class="dropdown-menu dropdown-user">
                                 <li><a href="{{url('client/create')}}">新增</a></li>
                                 <li><a href="#" data-toggle="modal" data-target="#excel_import">导入</a></li>
-                                <li><a href="{{route('client/export')}}">导出</a></li>
+                                <li><a href="#" id='excel_export'>导出</a></li>
                             </ul>
                             <a class="close-link">
                                 <i class="fa fa-times"></i>
@@ -117,7 +117,7 @@
     <!-- 弹框(导入) -->
     <div class="modal inmodal" id="excel_import" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
-            <form method="post" action="{{route('import')}}" class="form-horizontal m-t" enctype="multipart/form-data">
+            <form method="post" action="{{route('client/import')}}" class="form-horizontal m-t" enctype="multipart/form-data">
             <div class="modal-content animated bounceInRight">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span>
@@ -143,5 +143,16 @@
             </form>
         </div>
     </div>
+    <form id="excel_export_form" action="{{route('client/export')}}" method="post">
+      <input type="text" name="classify_id" value="{{$data['classify_id']}}">
+      <input type="text" name="name" value="{{$data['name']}}">
+      <input type="text" name="page" value="{{$data['page']}}">
+      {{ csrf_field() }}
+    </form>
     @include('layouts.admin_delete')
+    <script type="text/javascript">
+      $('#excel_export').click(function(){
+        $('#excel_export_form').submit();
+      })
+    </script>
 @stop

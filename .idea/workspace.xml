@@ -2,21 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9fa3f70d-eabc-4090-aa18-dec08fc871db" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/jbcrm.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jbcrm.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/ClientController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/ClientController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Middleware/Rbac.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Middleware/Rbac.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/app.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/app.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/client/classify.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/client/classify.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/ExcelController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/ExcelController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/client/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/client/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/jurisdiction/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/jurisdiction/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/role/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/role/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/user/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/user/index.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/exports/nVKoEsbqJ8dyTI26jlLxiLtQT5XAXbMXWdc7Mqm3.xls" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/exports/users.xls" beforeDir="false" afterPath="$PROJECT_DIR$/storage/exports/users.xls" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/exports/鐢ㄦ埛淇℃伅.xls" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -32,7 +25,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/UserController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="836">
+            <state relative-caret-position="2394">
               <caret line="138" column="37" selection-start-line="138" selection-start-column="37" selection-end-line="138" selection-end-column="37" />
               <folding>
                 <element signature="e#46#82#0#PHP" expanded="true" />
@@ -44,8 +37,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/ExcelController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="476">
-              <caret line="41" column="26" selection-start-line="41" selection-start-column="20" selection-end-line="41" selection-end-column="26" />
+            <state relative-caret-position="710">
+              <caret line="56" column="40" lean-forward="true" selection-start-line="52" selection-start-column="8" selection-end-line="56" selection-end-column="40" />
               <folding>
                 <element signature="e#46#66#0#PHP" expanded="true" />
               </folding>
@@ -53,16 +46,18 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/ClientController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="368">
-              <caret line="27" column="48" selection-start-line="27" selection-start-column="48" selection-end-line="27" selection-end-column="48" />
+            <state relative-caret-position="625">
+              <caret line="193" column="43" selection-start-line="193" selection-start-column="43" selection-end-line="193" selection-end-column="43" />
               <folding>
                 <element signature="e#46#70#0#PHP" expanded="true" />
-                <element signature="e#826#1930#0#PHP" />
-                <element signature="e#2144#3214#0#PHP" />
-                <element signature="e#3229#3467#0#PHP" />
+                <element signature="e#1806#2910#0#PHP" />
+                <element signature="e#2925#3107#0#PHP" />
+                <element signature="e#3124#4194#0#PHP" />
+                <element signature="e#4209#4447#0#PHP" />
+                <element signature="e#4473#6633#0#PHP" />
               </folding>
             </state>
           </provider>
@@ -79,9 +74,7 @@
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/config/database.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-54" />
-          </provider>
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -93,11 +86,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/Middleware/Rbac.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="566">
-              <caret line="32" column="18" selection-start-line="32" selection-start-column="18" selection-end-line="32" selection-end-column="18" />
+            <state relative-caret-position="386">
+              <caret line="25" column="19" selection-start-line="25" selection-start-column="19" selection-end-line="25" selection-end-column="19" />
               <folding>
                 <element signature="e#39#67#0#PHP" expanded="true" />
               </folding>
@@ -112,6 +105,7 @@
       <find>App\User</find>
       <find>admin_pic</find>
       <find>Jurisdiction</find>
+      <find>export</find>
     </findStrings>
     <replaceStrings>
       <replace>App\Models\User</replace>
@@ -145,10 +139,10 @@
         <option value="$PROJECT_DIR$/database/seeds/ClassifiesTableSeeder.php" />
         <option value="$PROJECT_DIR$/app/Providers/AppServiceProvider.php" />
         <option value="$PROJECT_DIR$/database/seeds/ClientsTableSeeder.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/ExcelController.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/ClientController.php" />
         <option value="$PROJECT_DIR$/config/hint.php" />
         <option value="$PROJECT_DIR$/app/Http/Middleware/Rbac.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/ExcelController.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/ClientController.php" />
       </list>
     </option>
   </component>
@@ -324,11 +318,6 @@
             <path>
               <item name="jbcrm" type="b2602c69:ProjectViewProjectNode" />
               <item name="jbcrm" type="462c0819:PsiDirectoryNode" />
-              <item name="config" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="jbcrm" type="b2602c69:ProjectViewProjectNode" />
-              <item name="jbcrm" type="462c0819:PsiDirectoryNode" />
               <item name="database" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -336,6 +325,17 @@
               <item name="jbcrm" type="462c0819:PsiDirectoryNode" />
               <item name="database" type="462c0819:PsiDirectoryNode" />
               <item name="seeds" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="jbcrm" type="b2602c69:ProjectViewProjectNode" />
+              <item name="jbcrm" type="462c0819:PsiDirectoryNode" />
+              <item name="storage" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="jbcrm" type="b2602c69:ProjectViewProjectNode" />
+              <item name="jbcrm" type="462c0819:PsiDirectoryNode" />
+              <item name="storage" type="462c0819:PsiDirectoryNode" />
+              <item name="app" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -389,16 +389,18 @@
       <workItem from="1553522139075" duration="7574000" />
       <workItem from="1553608128483" duration="9791000" />
       <workItem from="1553693913104" duration="6356000" />
+      <workItem from="1554017661646" duration="20418000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="92002000" />
+    <option name="totallyTimeSpent" value="112420000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25479743" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25746268" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -652,20 +654,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/UserController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="836">
+        <state relative-caret-position="2394">
           <caret line="138" column="37" selection-start-line="138" selection-start-column="37" selection-end-line="138" selection-end-column="37" />
           <folding>
             <element signature="e#46#82#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/ExcelController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="41" column="26" selection-start-line="41" selection-start-column="20" selection-end-line="41" selection-end-column="26" />
-          <folding>
-            <element signature="e#46#66#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -678,22 +670,7 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/config/database.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-54" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/ClientController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="368">
-          <caret line="27" column="48" selection-start-line="27" selection-start-column="48" selection-end-line="27" selection-end-column="48" />
-          <folding>
-            <element signature="e#46#70#0#PHP" expanded="true" />
-            <element signature="e#826#1930#0#PHP" />
-            <element signature="e#2144#3214#0#PHP" />
-            <element signature="e#3229#3467#0#PHP" />
-          </folding>
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/config/hint.php">
       <provider selected="true" editor-type-id="text-editor">
@@ -704,10 +681,35 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Middleware/Rbac.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="566">
-          <caret line="32" column="18" selection-start-line="32" selection-start-column="18" selection-end-line="32" selection-end-column="18" />
+        <state relative-caret-position="386">
+          <caret line="25" column="19" selection-start-line="25" selection-start-column="19" selection-end-line="25" selection-end-column="19" />
           <folding>
             <element signature="e#39#67#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/ExcelController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="710">
+          <caret line="56" column="40" lean-forward="true" selection-start-line="52" selection-start-column="8" selection-end-line="56" selection-end-column="40" />
+          <folding>
+            <element signature="e#46#66#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/ClientController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="625">
+          <caret line="193" column="43" selection-start-line="193" selection-start-column="43" selection-end-line="193" selection-end-column="43" />
+          <folding>
+            <element signature="e#46#70#0#PHP" expanded="true" />
+            <element signature="e#1806#2910#0#PHP" />
+            <element signature="e#2925#3107#0#PHP" />
+            <element signature="e#3124#4194#0#PHP" />
+            <element signature="e#4209#4447#0#PHP" />
+            <element signature="e#4473#6633#0#PHP" />
           </folding>
         </state>
       </provider>

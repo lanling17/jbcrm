@@ -13,16 +13,18 @@ class ExcelController extends Controller
     public function import(Request $request){
 //        $res = file_get_contents('storage/app/xls/hL9ZVGV6nNVHVRf5uhUKlykIqeestvgDI5cqdjP8.xls');
 //        dd($res);
-//        $path = $request->excel->store('xls');
+        $path = $request->file('excel')->store('excel');
+//        dd($path);
 //        $file = explode('/',$path);
 //        $fileName = explode('.',$file[1]);
 
 //        $file = $_FILES;
 //        $excel_file_path = $file['excel']['tmp_name'];
 //        dd($path);
-        $filePath = 'storage/exports/'.iconv('UTF-8', 'GBK', 'users').'.xls';
+//        $filePath = 'storage/exports/'.iconv('GBK', 'UTF-8', 'nVKoEsbqJ8dyTI26jlLxiLtQT5XAXbMXWdc7Mqm3').'.xls';
 //        dd($filePath);
-//        $filePath = 'storage/app/'.$path;
+        $filePath = 'storage/app/'.$path;
+//        dd($filePath);
         Excel::load($filePath, function($reader) {
             $data = $reader->all();
             dd($data);
