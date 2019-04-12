@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Jurisdiction;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\UserJurisdictions;
 use App\Models\UserRole;
 use Illuminate\Http\Request;
 use App\Services\Upload;
@@ -14,13 +16,15 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+//        echo '<pre>';
     }
 
     public function index(){
         $list = User::paginate(config('hint.a_num'));
         foreach ($list as $v){
-            $v->roles = UserRole::getUserRoleName($v->id);
+            $v->jurisdictions = UserJurisdictions::getJurisdictionName($v->id);
         }
+//        dd($list);
         return view('user.index',compact('list'));
     }
 

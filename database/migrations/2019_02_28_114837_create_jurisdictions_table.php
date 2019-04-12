@@ -19,6 +19,7 @@ class CreateJurisdictionsTable extends Migration
             $table->string('slug',50)->comment('标识');
             $table->string('http_method')->comment('请求方式');
             $table->text('http_path')->comment('请求路径');
+            $table->integer('parent')->comment('父级ID')->default(0);
             $table->timestamps();
         });
     }

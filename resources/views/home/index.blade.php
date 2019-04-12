@@ -68,7 +68,7 @@
                         </a>
                         <ul class="nav nav-second-level">
                             <li><a class="J_menuItem" href="{{url('user')}}">用户管理</a></li>
-                            <li><a class="J_menuItem" href="{{url('role')}}">角色管理</a></li>
+                            <!-- <li><a class="J_menuItem" href="{{url('role')}}">角色管理</a></li> -->
                             <li><a class="J_menuItem" href="{{url('jurisdiction')}}">权限管理</a></li>
                         </ul>
                     </li>
@@ -79,8 +79,12 @@
                             <span class="fa arrow"></span>
                         </a>
                         <ul class="nav nav-second-level">
-                            <li><a class="J_menuItem" href="{{url('classify')}}">客户分类</a></li>
+                            <li><a class="J_menuItem" href="{{url('classify')}}">分类列表</a></li>
+                            <li><a class="J_menuItem" href="{{url('client')}}">学员列表</a></li>
+                            <li><a class="J_menuItem" href="{{url('client')}}">投资人列表</a></li>
                             <li><a class="J_menuItem" href="{{url('client')}}">客户列表</a></li>
+                            <li><a class="J_menuItem" href="{{url('client')}}">供应商列表</a></li>
+                            <li><a class="J_menuItem" href="{{url('client')}}">教授列表</a></li>
                         </ul>
                     </li>
 

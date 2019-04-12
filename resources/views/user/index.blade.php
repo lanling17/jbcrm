@@ -33,12 +33,12 @@
                          <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th >ID</th>
+                                    <th >编号</th>
                                     <th>用户名</th>
                                     <th>昵称</th>
                                     <th>电话</th>
                                     <th>邮箱</th>
-                                    <th>角色</th>
+                                    <th>权限</th>
                                     <!-- <th>状态</th> -->
                                     <th>操作</th>
                                 </tr>
@@ -52,8 +52,8 @@
                                     <td class="center">{{$v->mobile}}</td>
                                     <td class="center">{{$v->email}}</td>
                                     <td class="center">
-                                      @foreach($v->roles as $role)
-                                          <span class="label label-info">{{$role}}</span>
+                                      @foreach($v->jurisdictions as $jurisdiction)
+                                          <span class="label label-info">{{$jurisdiction}}</span>
                                       @endforeach
                                     </td>
                                     <!-- <td class="center">
