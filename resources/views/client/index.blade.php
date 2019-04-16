@@ -35,14 +35,14 @@
                               <div class="col-sm-2">
                                   <select class="form-control" name="classify_id">
                                       <option value="0">请选择分类</option>
-                                      @foreach($classify as $ify)
-                                      <option value="{{$ify->id}}"  {{$data['classify_id'] == $ify->id ? 'selected' : ''}}>{{$ify->name}}</option>
-                                      @endforeach
+
+                                      <option value="" ></option>
+
                                   </select>
                               </div>
                               <div class="col-sm-1 juzhong"><label class="dinwei">姓名：</label></div>
                               <div class="col-sm-2">
-                                  <input class="form-control" type="text" name="name" value="{{$data['name'] != null ? $data['name'] : ''}}">
+                                  <input class="form-control" type="text" name="name" value="">
                               </div>
                               <button class="btn btn-primary" type="submit">搜索</button>
                           </div>
@@ -51,35 +51,28 @@
                          <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th >类别</th>
                                     <th>姓名</th>
                                     <th>性别</th>
-                                    <th>年龄</th>
+                                    <th>出生日期</th>
                                     <th>公司</th>
                                     <th>职位</th>
-                                    <th>重要等级</th>
-                                    <th>电话</th>
                                     <th>邮箱</th>
+                                    <th>电话</th>
                                     <th>微信</th>
-                                    <!-- <th>所属</th> -->
                                     <th>操作</th>
                                 </tr>
                             </thead>
                             <tbody>
                                @foreach($list as $v)
                                 <tr class="gradeC">
-                                    <td>{{$v->classify->name}}</td>
                                     <td>{{$v->name}}</td>
                                     <td>{{$v->sex ? '男' : '女'}}</td>
-                                    <td>{{$v->age}}</td>
-                                     <td>{{$v->company}}</td>
+                                    <td>{{$v->birthday}}</td>
+                                     <td>{{$v->compony}}</td>
                                     <td>{{$v->position}}</td>
-                                    <td>
-                                        <span class="label label-{{config('hint.important_grade_color')[$v->important_grade]}}">{{config('hint.important_grade')[$v->important_grade]}}</span>
-                                    </td>
                                     @if(Auth::id() == 1 || Auth::id() == $v->created_id)
-                                    <td>{{$v->phone}}</td>
                                     <td>{{$v->email}}</td>
+                                    <td>{{$v->telephone}}</td>
                                     <td>{{$v->wx_char}}</td>
                                     @else
                                     <td>****</td>
@@ -144,9 +137,9 @@
         </div>
     </div>
     <form id="excel_export_form" action="{{route('client/export')}}" method="post">
-      <input type="text" name="classify_id" value="{{$data['classify_id']}}">
-      <input type="text" name="name" value="{{$data['name']}}">
-      <input type="text" name="page" value="{{$data['page']}}">
+      <input type="text" name="classify_id" value="">
+      <input type="text" name="name" value="">
+      <input type="text" name="page" value="">
       {{ csrf_field() }}
     </form>
     @include('layouts.admin_delete')

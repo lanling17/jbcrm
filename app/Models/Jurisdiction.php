@@ -8,7 +8,7 @@ class Jurisdiction extends Model
 {
     //
     protected $fillable = [
-        'name','slug','http_method','http_path'
+        'name','slug','http_method','http_path','parent'
     ];
 
     /*

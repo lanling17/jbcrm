@@ -8,6 +8,7 @@ use App\Models\Role;
 use App\Models\User;
 use App\Models\UserJurisdictions;
 use App\Models\UserRole;
+use App\Services\Helper;
 use Illuminate\Http\Request;
 use App\Services\Upload;
 
@@ -29,8 +30,12 @@ class UserController extends Controller
     }
 
     public function create(){
-        $roles = Role::all();
-        return view('user.create',compact('roles'));
+//        $roles = Role::all();
+        //权限
+        $all = Jurisdiction::all()->toArray();
+        $jurisdictions = Helper::_tree($all);
+//        dd($jurisdictions);
+        return view('user.create',compact('jurisdictions'));
     }
 
     //执行添加
@@ -52,11 +57,12 @@ class UserController extends Controller
         }else{
             return back() -> with('hint',config('hint.upload_failure'));
         }
+//        dd($request->jurisdiction_ids);
         $result = User::create($credentials);
         if ($result){
             //添加角色
-            foreach ($request->role_ids as $rid){
-                UserRole::create(['user_id'=>$result->id,'role_id'=>$rid]);
+            foreach ($request->jurisdiction_ids as $jid){
+                UserJurisdictions::create(['user_id'=>$result->id,'jurisdictions_id'=>$jid]);
             }
             return redirect('user')->with('success', config('hint.add_success'));
         }else{
@@ -68,9 +74,14 @@ class UserController extends Controller
     //修改
     public function edit($id){
         $info = User::find($id)->toArray();
-        $info['role_ids'] = UserRole::getUserRoleId($id);
-        $roles = Role::all();
-        return view('user.edit',compact('info','roles'));
+        $info['jurisdiction_ids'] = UserJurisdictions::getJurisdictionId($id);
+//        $info['role_ids'] = UserRole::getUserRoleId($id);
+//        $roles = Role::all();
+        //权限
+        $all = Jurisdiction::all()->toArray();
+        $jurisdictions = Helper::_tree($all);
+//        dd($info);
+        return view('user.edit',compact('info','jurisdictions'));
     }
 
     //执行修改
@@ -103,21 +114,21 @@ class UserController extends Controller
             $credentials['head_pic'] = $request->get('admin_old_pic');
         }
         if(User::find($id)->update($credentials)){
-            $oldIds = UserRole::getUserRoleId($id);
+            $oldIds = UserJurisdictions::getJurisdictionId($id);
             //计算原数组与新数组的交集
-            $jiao = array_intersect($oldIds,$request->role_ids);
+            $jiao = array_intersect($oldIds,$request->jurisdiction_ids);
             //原数组去掉交集部分，剩下的删除
             $oldRemain = array_diff($oldIds,$jiao);
             if ($oldRemain){
                 foreach ($oldRemain as $oid){
-                    UserRole::where('user_id',$id)->where('role_id',$oid)->delete();
+                    UserJurisdictions::where('user_id',$id)->where('jurisdictions_id',$oid)->delete();
                 }
             }
             //新数组同样去掉交集部分，剩下的增加
-            $newRemain = array_diff($request->role_ids,$jiao);
+            $newRemain = array_diff($request->jurisdiction_ids,$jiao);
             if ($newRemain){
                 foreach ($newRemain as $nid){
-                    UserRole::create(['user_id'=>$id,'role_id'=>$nid]);
+                    UserJurisdictions::create(['user_id'=>$id,'jurisdictions_id'=>$nid]);
                 }
             }
             return redirect('user')->with('success', config('hint.mod_success'));

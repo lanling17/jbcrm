@@ -19,8 +19,8 @@ class CreateClientsTable extends Migration
           $table->string('name',100)->comment('姓名');
           $table->tinyInteger('sex')->comment('性别');
           $table->date('birthday')->comment('出生日期');
-          $table->string('compony',255)->comment('公司(全称，简称)');
-          $table->string('position',255)->comment('职务(多选，自己填)');
+          $table->string('company',255)->comment('公司(全称，简称)');
+          $table->string('position',255)->comment('职位(多选，自己填)');
           $table->string('email',255)->comment('邮箱');
           $table->char('telephone',11)->comment('电话');
           $table->string('wx_char',255)->comment('微信');

@@ -91,13 +91,16 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">角色：</label>
                                 <div class="col-sm-8">
-                                  @foreach($roles as $role)
+                                  @foreach($jurisdictions as $jurisdiction)
+                                  @if($jurisdiction['level'] ==1)
+                                  <br>
+                                  @endif
                                   <div class="checkbox checkbox-success checkbox-inline">
-                                     <input type="checkbox" id="inlineCheckbox{{$role->id}}" value="{{$role->id}}" name="role_ids[]">
-                                     <label for="inlineCheckbox{{$role->id}}"> {{$role->name}} </label>
+                                     <input type="checkbox" id="inlineCheckbox{{$jurisdiction['id']}}" value="{{$jurisdiction['id']}}" name="jurisdiction_ids[]">
+                                     <label for="inlineCheckbox{{$jurisdiction['id']}}"> {{$jurisdiction['name']}} </label>
                                  </div>
                                  @endforeach
-                                    <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 勾选需要给予的角色定位，他将获取该角色所拥有的所有权限</span>
+                                    <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 勾选需要给予的权限，他将获取该权限所具备的所有操作</span>
                                 </div>
                             </div>
                             <div class="form-group">

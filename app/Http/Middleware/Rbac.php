@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Models\Jurisdiction;
 use App\Models\RoleJurisdiction;
+use App\Models\UserJurisdictions;
 use App\Models\UserRole;
 use App\Models\User;
 use Closure;
@@ -26,10 +27,8 @@ class Rbac
         if (!$uid){
             return redirect()->route('login');
         }
-        //获取当前用户角色
+       /* //获取当前用户角色
         $rids = UserRole::getUserRoleId($uid);
-//        $userRoles = User::find(100)->userRoles;
-//        dd($userRoles);
         if (!$rids){
             return redirect('/403');
         }
@@ -41,6 +40,14 @@ class Rbac
                     $jurisdictions[] = Jurisdiction::find($jid);
                 }
             }
+        }*/
+        //获取当前角色的所有权限
+        $jids = UserJurisdictions::getJurisdictionId($uid);
+        if (!$jids){
+            return redirect('/403');
+        }
+        foreach($jids as $jid){
+            $jurisdictions[] = Jurisdiction::find($jid);
         }
         //获取当前路由
         $route_uri = \Route::current()->uri;

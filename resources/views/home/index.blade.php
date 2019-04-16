@@ -58,7 +58,10 @@
                         </div>
                     </li>
                     <li>
-                        <a class="J_menuItem" data-index="0" href="{{route('welcome')}}"><i class="fa fa-columns"></i> <span class="nav-label">主页</span></a>
+                        <a class="J_menuItem" data-index="0" href="{{route('welcome')}}">
+                          <i class="fa fa-columns"></i>
+                          <span class="nav-label">主页</span>
+                        </a>
                     </li>
                     <li>
                         <a href="#">
@@ -73,19 +76,18 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="#">
+                        <a class="J_menuItem" href="{{url('client')}}">
                             <i class="fa fa-users"></i>
                             <span class="nav-label">客户管理</span>
-                            <span class="fa arrow"></span>
                         </a>
-                        <ul class="nav nav-second-level">
+                        <!-- <ul class="nav nav-second-level">
                             <li><a class="J_menuItem" href="{{url('classify')}}">分类列表</a></li>
                             <li><a class="J_menuItem" href="{{url('client')}}">学员列表</a></li>
                             <li><a class="J_menuItem" href="{{url('client')}}">投资人列表</a></li>
                             <li><a class="J_menuItem" href="{{url('client')}}">客户列表</a></li>
                             <li><a class="J_menuItem" href="{{url('client')}}">供应商列表</a></li>
                             <li><a class="J_menuItem" href="{{url('client')}}">教授列表</a></li>
-                        </ul>
+                        </ul> -->
                     </li>
 
                 </ul>

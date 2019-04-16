@@ -14,8 +14,8 @@ class ClientController extends Controller
 {
     //首页
     public function index(Request $request){
-        $classify = Classify::all();
-        if ($request->all()){
+//        $classify = Classify::all();
+        /*if ($request->all()){
             $data['classify_id'] = $request->classify_id;
             $data['name'] = $request->name;
 
@@ -35,9 +35,10 @@ class ClientController extends Controller
             $data['name'] = null;
             $data['page'] = 1;
             $list = Client::paginate(config('hint.a_num'));
-        }
+        }*/
         $data['page'] = $request->page ? $request->page : 1;
-        return view('client.index',compact('list','classify','data'));
+        $list = Client::paginate(20);
+        return view('client.index',compact('list','data'));
     }
 
     //展示(单条)

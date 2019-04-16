@@ -1,4 +1,4 @@
-f<?php
+<?php
 /**
  * Created by PhpStorm.
  * User: Administrator
@@ -11,12 +11,16 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Jurisdiction;
+use App\Services\Helper;
 use Illuminate\Http\Request;
 
 class JurisdictionController extends Controller
 {
     public function index(){
-        $list = Jurisdiction::paginate(config('hint.a_num'));
+        $all = Jurisdiction::orderBy('created_at')->get()->toArray();
+        $list['arr'] = Helper::_tree($all);
+        $list['json'] = json_encode(Helper::_tree_json($all));
+//        dd($list);
         return view('jurisdiction.index',compact('list'));
     }
 
@@ -25,10 +29,13 @@ class JurisdictionController extends Controller
     }
 
     public function store(Request $request){
-        $verif = array('name'=>'required|unique:jurisdictions',
+        $verif =[
+            'name'=>'required|unique:jurisdictions',
             'slug'=>'required|unique:jurisdictions',
             'http_method'=>'required',
-            'http_path'=>'required');
+            'http_path'=>'required',
+            'parent'=>'required'
+        ];
         $credentials = $this->validate($request,$verif);
         if (Jurisdiction::create($credentials)){
             return redirect('jurisdiction')->with('success', config('hint.add_success'));
@@ -45,10 +52,13 @@ class JurisdictionController extends Controller
 
     //执行修改
     public function update(Request $request,$id){
-        $verif = array('name'=>'required|unique:jurisdictions,name,'.$id,
+        $verif = [
+            'name'=>'required|unique:jurisdictions,name,'.$id,
             'slug'=>'required|unique:jurisdictions,slug,'.$id,
             'http_method'=>'required',
-            'http_path'=>'required');
+            'http_path'=>'required',
+            'parent'=>'required'
+        ];
         $credentials = $this->validate($request,$verif);
         if (Jurisdiction::find($id)->update($credentials)){
             return redirect('jurisdiction')->with('success', config('hint.mod_success'));
@@ -59,10 +69,16 @@ class JurisdictionController extends Controller
 
     //删除
     public function destroy($id){
-        if (Jurisdiction::destroy($id)){
-            return back() -> with('success',config('hint.del_success'));
+        $juri_son = Jurisdiction::where('parent',$id)->get()->toArray();
+        if ($juri_son){
+            return back() -> with('hint',config('hint.del_failure_exist'));
         }else{
-            return back() -> with('hint',config('hint.del_failure'));
+            if (Jurisdiction::destroy($id)){
+                return back() -> with('success',config('hint.del_success'));
+            }else{
+                return back() -> with('hint',config('hint.del_failure'));
+            }
         }
+
     }
 }

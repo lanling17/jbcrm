@@ -3,7 +3,7 @@
 @section('content')
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="row">
-            <div class="col-sm-6">
+            <div class="col-sm-10">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
                         <h5>修改用户信息</h5>
@@ -92,12 +92,15 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">角色：</label>
                                 <div class="col-sm-8">
-                                  @foreach($roles as $role)
-                                  <div class="checkbox checkbox-success checkbox-inline">
-                                     <input type="checkbox" id="inlineCheckbox{{$role->id}}" value="{{$role->id}}" name="role_ids[]" {{in_array($role->id,$info['role_ids']) ? 'checked' : ''}}>
-                                     <label for="inlineCheckbox{{$role->id}}"> {{$role->name}} </label>
-                                 </div>
-                                 @endforeach
+                                 @foreach($jurisdictions as $jurisdiction)
+                                 @if($jurisdiction['level'] ==1)
+                                 <br>
+                                 @endif
+                                 <div class="checkbox checkbox-success checkbox-inline">
+                                    <input type="checkbox" id="inlineCheckbox{{$jurisdiction['id']}}" value="{{$jurisdiction['id']}}" name="jurisdiction_ids[]" {{in_array($jurisdiction['id'],$info['jurisdiction_ids']) ? 'checked' : ''}}>
+                                    <label for="inlineCheckbox{{$jurisdiction['id']}}"> {{$jurisdiction['name']}} </label>
+                                </div>
+                                @endforeach
                                     <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 勾选需要给予的角色定位，他将获取该角色所拥有的所有权限</span>
                                 </div>
                             </div>

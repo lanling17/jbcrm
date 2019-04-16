@@ -31,4 +31,15 @@ class UserJurisdictions extends Model
         }
         return $names;
     }
+
+    //通过用户ID获取用户权限ID
+    public static function getJurisdictionId($uid){
+        $result = self::where('user_id',$uid)->get();
+        $ids = [];
+        foreach ($result as $v){
+            $juri = Jurisdiction::find($v->jurisdictions_id);
+            $ids[] = $juri->id;
+        }
+        return $ids;
+    }
 }
