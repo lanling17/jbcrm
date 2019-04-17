@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Classify;
 use App\Models\Client;
+use App\Models\File;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -54,28 +55,98 @@ class ClientController extends Controller
 
     //执行添加
     public function store(Request $request){
-        $verif = ['classify_id'=>'required',
+        $verif = [
             'name' => 'required',
-            'contacts' => 'required',
             'sex' => 'required',
+            'birthday' => 'required',
+            'company_full' => 'required',
+            'company_short' => 'required',
             'email' => 'required',
-            'phone' => 'required',
-            'age' => 'required',
-            'company' => 'required',
-            'position' => 'required',
-            'out_lable' => 'required',
-            'in_lable' => 'required',
-            'nature' => 'required',
+            'telephone' => 'required|max:11',
             'wx_char' => 'required',
-            'important_grade' => 'required',
-            'remarks' => 'required',
-            'cooperationing' => 'required',
-            'cooperationed' => 'required',
-            'scale' => 'required'];
-        $credentials = $this->validate($request,$verif);
+            'address' => 'required',
+        ];
+        $message = [
+            'name.required' => '姓名 不能为空',
+            'birthday.required' => '生日 不能为空',
+            'company_full.required' => '公司全称 不能为空',
+            'company_short.required' => '公司简称 不能为空',
+            'telephone.required' => '联系电话 不能为空',
+            'wx_char.required' => '微信 不能为空',
+        ];
+        $credentials = $this->validate($request,$verif,$message);
+        //公司
+        $credentials['company'] = $credentials['company_full'].','.$credentials['company_short'];
+        unset($credentials['company_full']);
+        unset($credentials['company_short']);
+        //职位
+        if ($request->position && $request->position_qt){
+            $credentials['position'] = implode(',',$request->position).','.$request->position_qt;
+        }elseif($request->position && !$request->position_qt){
+            $credentials['position'] = implode(',',$request->position);
+        }elseif(!$request->position && $request->position_qt){
+            $credentials['position'] = $request->position_qt;
+        }else{
+            return back()->with('hint','请选择职位或者填写');
+        }
+        //行业
+        if ($request->industry && $request->industry_qt){
+            $credentials['industry'] = implode(',',$request->industry).','.$request->position_qt;
+        }elseif($request->industry && !$request->industry_qt){
+            $credentials['industry'] = implode(',',$request->industry);
+        }elseif(!$request->industry && $request->industry_qt){
+            $credentials['industry'] = $request->industry_qt;
+        }else{
+            return back()->with('hint','请选择行业或者填写');
+        }
+        //关系
+        if ($request->relation && $request->relation_qt){
+            $credentials['relation'] = implode(',',$request->relation).','.$request->relation_qt;
+        }elseif($request->relation && !$request->relation_qt){
+            $credentials['relation'] = implode(',',$request->relation);
+        }elseif(!$request->relation && $request->relation_qt){
+            $credentials['relation'] = $request->relation_qt;
+        }else{
+            return back()->with('hint','请选择关系或者填写');
+        }
+        //地区
+        if ($request->area_qt){
+            $credentials['area'] = $request->area_qt;
+        }else{
+            $credentials['area'] = $request->province.'-'.$request->city.'-'.$request->district;
+        }
+        //可为空的字段 合作过中的项目，合作过的项目,备注
+        if ($request->cooperationing){
+            $credentials['cooperationing'] = $request->cooperationing;
+        }
+        if ($request->cooperationed){
+            $credentials['cooperationed'] = $request->cooperationed;
+        }
+        if ($request->remark){
+            $credentials['remark'] = $request->remark;
+        }
         $credentials['created_id'] = Auth::id();
         $credentials['updated_id'] = Auth::id();
-        if (Client::create($credentials)){
+//        dd($credentials);
+        if ($result = Client::create($credentials)){
+            //照片上传
+            if ($request->picture){
+                $pictture['type'] = 1;
+                $pictture['user_id'] = $result->id;
+                foreach ($request->picture as $pic){
+                    $pictture['url'] = $pic->store('picture/'.$request->id);
+                    File::create($pictture);
+                }
+
+            }
+            //名片上传
+            if ($request->visiting_card){
+                $visiting_card['type'] = 2;
+                $visiting_card['user_id'] = $result->id;
+                $visiting_card['url'] = $request->visiting_card->store('visiting_card/'.$request->id);
+                File::create($visiting_card);
+            }
+
             return redirect('client')->with('success', config('hint.add_success'));
         }else{
             return back()->with('hint',config('hint.add_failure'));
@@ -86,6 +157,23 @@ class ClientController extends Controller
     public function edit($id){
         $classifies = Classify::all();
         $info = Client::find($id)->toArray();
+        $company = explode(',',$info['company']);
+        $info['company_full'] = $company[0];
+        $info['company_short'] = $company[1];
+
+        $position = explode(',',$info['position']);
+        $info['pjiao'] = array_intersect($position,config('hint.position'));
+        $info['position_qt'] = implode(',',array_diff($position,$info['pjiao']));
+
+        $industry = explode(',',$info['industry']);
+        $info['ijiao'] = array_intersect($industry,config('hint.industry'));
+        $info['industry_qt'] = implode(',',array_diff($industry,$info['ijiao']));
+
+        $relation = explode(',',$info['relation']);
+        $info['rjiao'] = array_intersect($relation,config('hint.relation'));
+        $info['relation_qt'] = implode(',',array_diff($relation,$info['rjiao']));
+
+//        dd($info);
         return view('client.edit',compact('classifies','info'));
     }
 

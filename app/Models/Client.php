@@ -8,24 +8,21 @@ class Client extends Model
 {
     //
     protected $fillable = [
-        'classify_id',
         'name',
-        'contacts',
         'sex',
-        'email',
-        'phone',
-        'age',
+        'birthday',
         'company',
         'position',
-        'out_lable',
-        'in_lable',
-        'nature',
+        'email',
+        'telephone',
         'wx_char',
-        'important_grade',
-        'remarks',
+        'area',
+        'address',
+        'industry',
+        'relation',
+        'remark',
         'cooperationing',
         'cooperationed',
-        'scale',
         'created_id',
         'updated_id'];
 

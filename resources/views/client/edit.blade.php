@@ -1,12 +1,19 @@
 @extends('layouts.admin')
 @section('title','客户修改')
 @section('content')
+<style media="screen">
+  .pic{
+    width: 100px;
+    margin-left: 10px;
+  }
+</style>
+
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="row">
             <div class="col-sm-10">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h5>客户修改</h5>
+                        <h5>修改客户</h5>
                         <div class="ibox-tools">
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
@@ -27,20 +34,8 @@
                     </div>
                     @include('layouts.admin_hint')
                     <div class="ibox-content">
-                        <form action="{{url('client/'.$info['id'])}}" class="form-horizontal m-t" method="POST" enctype="multipart/form-data">
+                        <form action="{{url('client')}}" class="form-horizontal m-t" method="POST" enctype="multipart/form-data">
                           @csrf
-                          <input type="hidden" name="_method" value="put"/>
-                            <!-- 分类ID -->
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">分类：</label>
-                                <div class="col-sm-6">
-                                    <select class="form-control" name="classify_id">
-                                        @foreach($classifies as $classify)
-                                        <option value={{$classify->id}} {{$classify->id == $info['classify_id'] ? 'selected' : ''}}>{{$classify->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
                             <!-- 姓名 -->
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">姓名：</label>
@@ -48,6 +43,7 @@
                                     <input  name="name" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error" value="{{$info['name']}}">
                                 </div>
                             </div>
+
                             <!-- 性别 -->
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">性别：</label>
@@ -57,72 +53,63 @@
                                       <label for="inlineRadio1"> 男</label>
                                   </div>
                                   <div class="radio radio-info radio-inline">
-                                        <input type="radio" id="inlineRadio0" value="0" name="sex" {{$info['sex'] == 0 ? 'checked' : ''}}>
+                                        <input type="radio" id="inlineRadio0" value="0" name="sex" {{$info['sex'] != 1 ? 'checked' : ''}}>
                                         <label for="inlineRadio0"> 女 </label>
                                     </div>
                                 </div>
                             </div>
-                            <!-- 年龄 -->
+                             <!-- 出生日期 -->
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">年龄：</label>
-                                <div class="col-sm-8">
-                                    <input name="age" class="form-control" type="number" value="{{$info['age']}}">
+                                <label class="col-sm-3 control-label">出生日期：</label>
+                                <div class="col-sm-6">
+                                  <input class="laydate-icon form-control layer-date" onclick="laydate({istime: true, format: 'YYYY-MM-DD'})" name="birthday" value="{{$info['birthday']}}">
                                 </div>
                             </div>
-                             <!-- 公司 -->
+                             <!-- 公司(全称) -->
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">公司：</label>
+                                <label class="col-sm-3 control-label">公司(全称)：</label>
                                 <div class="col-sm-8">
-                                    <input name="company" class="form-control" type="text" value="{{$info['company']}}">
+                                    <input name="company_full" class="form-control" type="text" value="{{$info['company_full']}}">
                                 </div>
                             </div>
-                             <!-- 职位 -->
+                            <!-- 公司(简称) -->
+                           <div class="form-group">
+                               <label class="col-sm-3 control-label">公司(简称)：</label>
+                               <div class="col-sm-8">
+                                   <input name="company_short" class="form-control" type="text" value="{{$info['company_short']}}">
+                               </div>
+                           </div>
+                            <!-- 职位 -->
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">职位：</label>
                                 <div class="col-sm-8">
-                                    <input name="position" class="form-control" type="text" value="{{$info['position']}}">
+                                  <select data-placeholder="选择职位" class="chosen-select" multiple style="width:100%;" tabindex="4" name="position[]">
+                                    @foreach(config('hint.position') as $position)
+                                      <option value="{{$position}}" hassubinfo="true" {{in_array($position,$info['pjiao']) ? 'selected' : ''}}>{{$position}}</option>
+                                    @endforeach
+                                  </select>
+
                                 </div>
                             </div>
-                             <!-- 邮箱 -->
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label"></label>
+                                <div class="col-sm-8">
+                                  <label>其他(选项中没有填写)：</label>
+                                  <input name="position_qt" class="form-control" type="text" value="{{$info['position_qt']}}">
+                                </div>
+                            </div>
+                            <!-- 邮箱 -->
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">邮箱：</label>
                                 <div class="col-sm-8">
                                     <input name="email" class="form-control" type="email" value="{{$info['email']}}">
                                 </div>
                             </div>
-                             <!-- 联系人 -->
+                            <!-- 电话 -->
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">联系人：</label>
+                                <label class="col-sm-3 control-label">电话：</label>
                                 <div class="col-sm-8">
-                                    <input name="contacts" class="form-control" type="text" value="{{$info['contacts']}}">
-                                </div>
-                            </div>
-                             <!-- 联系电话 -->
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">联系电话：</label>
-                                <div class="col-sm-8">
-                                    <input name="phone" class="form-control" type="text" value="{{$info['phone']}}">
-                                </div>
-                            </div>
-                            <!-- 公司外部标签 -->
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">公司外部标签：</label>
-                                <div class="col-sm-8">
-                                    <input name="out_lable" class="form-control" type="text" value="{{$info['out_lable']}}">
-                                </div>
-                            </div>
-                            <!-- 公司内部标签 -->
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">公司内部标签：</label>
-                                <div class="col-sm-8">
-                                    <input name="in_lable" class="form-control" type="text" value="{{$info['in_lable']}}">
-                                </div>
-                            </div>
-                            <!-- 性质 -->
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">性质：</label>
-                                <div class="col-sm-8">
-                                    <input name="nature" class="form-control" type="text" value="{{$info['nature']}}">
+                                    <input name="telephone" class="form-control" type="text" value="{{$info['telephone']}}">
                                 </div>
                             </div>
                             <!-- 微信 -->
@@ -132,15 +119,77 @@
                                     <input name="wx_char" class="form-control" type="text" value="{{$info['wx_char']}}">
                                 </div>
                             </div>
-                            <!-- 重要等级 -->
+
+                            <!-- 地区 -->
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">重要等级：</label>
-                                <div class="col-sm-6">
-                                    <select class="form-control" name="important_grade">
-                                        @foreach(config('hint.important_grade') as $k=>$important_grade)
-                                        <option value={{$k}} {{$info['important_grade'] == $k ? 'selected' : ''}}>{{$important_grade}}</option>
-                                        @endforeach
+                                <label class="col-sm-3 control-label">地区：</label>
+                                <div class="col-sm-8">
+                                  <div id="distpicker1">
+                                    <div class="col-sm-3">
+                                      <label class="sr-only" for="province4">Province</label>
+                                      <select class="form-control" id="province4" name="province"></select>
+                                    </div>
+                                    <div class="col-sm-3">
+                                      <label class="sr-only" for="city4">City</label>
+                                      <select class="form-control" id="city4" name="city"></select>
+                                    </div>
+                                    <div class="col-sm-3">
+                                      <label class="sr-only" for="district4">District</label>
+                                      <select class="form-control" id="district4" name="district"></select>
+                                    </div>
+                                  </div>
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+                              <label class="col-sm-3 control-label"></label>
+                              <div class="col-sm-8">
+                                <label>其他(国外地区填写格式：省-市-区/县)：</label>
+                                <input name="area_qt" class="form-control" type="text" value="{{old('area_qt')}}">
+                              </div>
+                            </div>
+                            <!-- 联系地址 -->
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">联系地址：</label>
+                                <div class="col-sm-8">
+                                    <input name="address" class="form-control" type="text" value="{{$info['address']}}">
+                                </div>
+                            </div>
+                            <!-- 所在行业 -->
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">所在行业：</label>
+                                <div class="col-sm-8">
+                                    <select data-placeholder="选择行业" class="chosen-select" multiple style="width:100%;" tabindex="4" name="industry[]">
+                                      @foreach(config('hint.industry') as $industry)
+                                        <option value="{{$industry}}" hassubinfo="true" {{in_array($industry,$info['ijiao']) ? 'selected' : ''}}>{{$industry}}</option>
+                                      @endforeach
                                     </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label"></label>
+                                <div class="col-sm-8">
+                                  <label>其他(选项中没有填写)：</label>
+                                  <input name="industry_qt" class="form-control" type="text" value="{{$info['industry_qt']}}">
+                                </div>
+                            </div>
+                            <!-- 关系 -->
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">关系：</label>
+                                <div class="col-sm-8">
+                                  <select data-placeholder="选择关系" class="chosen-select" multiple style="width:100%;" tabindex="4" name="relation[]">
+                                    @foreach(config('hint.relation') as $relation)
+                                      <option value="{{$relation}}" hassubinfo="true" {{in_array($relation,$info['rjiao']) ? 'selected' : ''}}>{{$relation}}</option>
+                                    @endforeach
+                                  </select>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label"></label>
+                                <div class="col-sm-8">
+                                  <label>其他(选项中没有填写)：</label>
+                                  <input name="relation_qt" class="form-control" type="text" value="{{$info['relation_qt']}}">
                                 </div>
                             </div>
                             <!-- 合作过的项目 -->
@@ -157,18 +206,37 @@
                                     <input name="cooperationing" class="form-control" type="text" value="{{$info['cooperationing']}}">
                                 </div>
                             </div>
-                            <!-- 规模 -->
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">规模：</label>
-                                <div class="col-sm-8">
-                                    <input name="scale" class="form-control" type="text" value="{{$info['scale']}}">
-                                </div>
-                            </div>
-                            <!-- HTTP方法： -->
+                            <!-- 备注 -->
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">备注：</label>
                                 <div class="col-sm-8">
-                                     <textarea style="width: 100%;height: 100px;resize: none;" name="remarks">{{$info['remarks']}}</textarea>
+                                     <textarea style="width: 100%;height: 100px;resize: none;" name="remark">{{$info['remark']}}</textarea>
+                                </div>
+                            </div>
+                            <!-- 照片（多张） -->
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">照片（多张）：</label>
+                                <div class="col-sm-8">
+                                     <input type="file" name="picture[]" id="picture" multiple>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label"></label>
+                                <div class="col-sm-8" id="picture_yl">
+
+                                </div>
+                            </div>
+                            <!-- 名片 -->
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">名片：</label>
+                                <div class="col-sm-8">
+                                     <input type="file" name="visiting_card" >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label"></label>
+                                <div class="col-sm-8">
+                                     <img src="" alt="" id="visiting" class="pic">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -183,4 +251,60 @@
             </div>
         </div>
     </div>
+    <script src="{{asset('hplus/js/plugins/layer/laydate/laydate.js')}}"></script>
+    <script src="{{asset('hplus/js/plugins/chosen/chosen.jquery.js')}}"></script>
+    <script src="{{asset('js/distpicker.data.js')}}"></script>
+	  <script src="{{asset('js/distpicker.js')}}"></script>
+	  <!-- <script src="{{asset('js/main.js')}}"></script> -->
+
+    <script type="text/javascript">
+      //select下拉多选
+      var config = {
+        ".chosen-select": {},
+        ".chosen-select-deselect": {
+          allow_single_deselect: !0
+        },
+        ".chosen-select-no-single": {
+          disable_search_threshold: 10
+        },
+        ".chosen-select-no-results": {
+          no_results_text: "Oops, nothing found!"
+        },
+        ".chosen-select-width": {
+          width: "95%"
+        }
+      };
+      for (var selector in config) $(selector).chosen(config[selector]);
+
+      //三级联动
+      $('#distpicker1').distpicker();
+
+      //图片预览
+       function getObjectURL(file){
+           var url = null;
+           if (window.createObjectURL!=undefined) {
+             url = window.createObjectURL(file) ;
+            } else if (window.URL!=undefined) { // mozilla(firefox)
+             url = window.URL.createObjectURL(file) ;
+            } else if (window.webkitURL!=undefined) { // webkit or chrome
+             url = window.webkitURL.createObjectURL(file) ;
+            }
+            return url ;
+       }
+       //照片
+       $('#picture').change(function(){
+         var html = '';
+         for (var i = 0; i < this.files.length; i++) {
+            html += '<img src="'+getObjectURL(this.files[i])+'" class="pic">';
+         }
+
+         $('#picture_yl').html(html);
+       })
+       //名片图像
+       $('[name=visiting_card]').change(function(){
+         var imgurl = getObjectURL(this.files[0]);
+         $('#visiting').attr('src',imgurl);
+       })
+
+    </script>
 @stop

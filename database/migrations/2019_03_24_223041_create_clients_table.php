@@ -28,9 +28,9 @@ class CreateClientsTable extends Migration
           $table->string('address',255)->comment('联系地址');
           $table->string('industry',255)->comment('所在行业(下拉加手填)');
           $table->string('relation',255)->comment('关系（下拉加手填）');
-          $table->string('cooperationing',255)->comment('合作中的项目');
-          $table->string('cooperationed',255)->comment('合作过的项目');
-          $table->string('remark',255)->comment('备注');
+          $table->string('cooperationing',255)->comment('合作中的项目')->nullable();
+          $table->string('cooperationed',255)->comment('合作过的项目')->nullable();
+          $table->string('remark',255)->comment('备注')->nullable();
           $table->integer('created_id')->comment('创建者ID');
           $table->integer('updated_id')->comment('修改者ID');
           $table->timestamps();

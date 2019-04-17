@@ -1,7 +1,12 @@
 @extends('layouts.admin')
 @section('title','添加客户')
 @section('content')
-
+<style media="screen">
+  .pic{
+    width: 100px;
+    margin-left: 10px;
+  }
+</style>
 
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="row">
@@ -57,28 +62,40 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">出生日期：</label>
                                 <div class="col-sm-6">
-                                  <input class="laydate-icon form-control layer-date" onclick="laydate({istime: true, format: 'YYYY-MM-DD'})">
+                                  <input class="laydate-icon form-control layer-date" onclick="laydate({istime: true, format: 'YYYY-MM-DD'})" name="birthday" value="{{old('birthday ')}}">
                                 </div>
                             </div>
                              <!-- 公司(全称) -->
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">公司(全称)：</label>
                                 <div class="col-sm-8">
-                                    <input name="company_full" class="form-control" type="text" value="{{old('company')}}">
+                                    <input name="company_full" class="form-control" type="text" value="{{old('company_full')}}">
                                 </div>
                             </div>
                             <!-- 公司(简称) -->
                            <div class="form-group">
                                <label class="col-sm-3 control-label">公司(简称)：</label>
                                <div class="col-sm-8">
-                                   <input name="company_short" class="form-control" type="text" value="{{old('company')}}">
+                                   <input name="company_short" class="form-control" type="text" value="{{old('company_short')}}">
                                </div>
                            </div>
                             <!-- 职位 -->
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">职位：</label>
                                 <div class="col-sm-8">
-                                    <input name="position" class="form-control" type="text" value="{{old('position')}}">
+                                  <select data-placeholder="选择职位" class="chosen-select" multiple style="width:100%;" tabindex="4" name="position[]">
+                                    @foreach(config('hint.position') as $position)
+                                      <option value="{{$position}}" hassubinfo="true">{{$position}}</option>
+                                    @endforeach
+                                  </select>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label"></label>
+                                <div class="col-sm-8">
+                                  <label>其他(选项中没有填写)：</label>
+                                  <input name="position_qt" class="form-control" type="text" value="{{old('position_qt')}}">
                                 </div>
                             </div>
                             <!-- 邮箱 -->
@@ -92,14 +109,14 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">电话：</label>
                                 <div class="col-sm-8">
-                                    <input name="contacts" class="form-control" type="text" value="{{old('contacts')}}">
+                                    <input name="telephone" class="form-control" type="text" value="{{old('telephone')}}">
                                 </div>
                             </div>
                             <!-- 微信 -->
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">微信：</label>
                                 <div class="col-sm-8">
-                                    <input name="phone" class="form-control" type="text" value="{{old('phone')}}">
+                                    <input name="wx_char" class="form-control" type="text" value="{{old('wx_char')}}">
                                 </div>
                             </div>
 
@@ -107,34 +124,72 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">地区：</label>
                                 <div class="col-sm-8">
-                                    <input name="out_lable" class="form-control" type="text" value="{{old('out_lable')}}">
+                                  <div id="distpicker1">
+                                    <div class="col-sm-3">
+                                      <label class="sr-only" for="province4">Province</label>
+                                      <select class="form-control" id="province4" name="province"></select>
+                                    </div>
+                                    <div class="col-sm-3">
+                                      <label class="sr-only" for="city4">City</label>
+                                      <select class="form-control" id="city4" name="city"></select>
+                                    </div>
+                                    <div class="col-sm-3">
+                                      <label class="sr-only" for="district4">District</label>
+                                      <select class="form-control" id="district4" name="district"></select>
+                                    </div>
+                                  </div>
                                 </div>
+
+                            </div>
+                            <div class="form-group">
+                              <label class="col-sm-3 control-label"></label>
+                              <div class="col-sm-8">
+                                <label>其他(国外地区填写格式：省-市-区/县)：</label>
+                                <input name="area_qt" class="form-control" type="text" value="{{old('area_qt')}}">
+                              </div>
                             </div>
                             <!-- 联系地址 -->
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">联系地址：</label>
                                 <div class="col-sm-8">
-                                    <input name="in_lable" class="form-control" type="text" value="{{old('in_lable')}}">
+                                    <input name="address" class="form-control" type="text" value="{{old('address')}}">
                                 </div>
                             </div>
                             <!-- 所在行业 -->
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">所在行业：</label>
                                 <div class="col-sm-8">
-                                    <!-- <input name="nature" class="form-control" type="text" value="{{old('nature')}}"> -->
-                                    <div class="input-group">
-                                        <select data-placeholder="选择行业" class="chosen-select" multiple style="width:350px;" tabindex="4">
-                                            <option value="">请选择行业</option>
-                                            <option value="110000" hassubinfo="true">北京</option>
-                                        </select>
-                                    </div>
+                                    <select data-placeholder="选择行业" class="chosen-select" multiple style="width:100%;" tabindex="4" name="industry[]">
+                                      @foreach(config('hint.industry') as $industry)
+                                        <option value="{{$industry}}" hassubinfo="true">{{$industry}}</option>
+                                      @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label"></label>
+                                <div class="col-sm-8">
+                                  <label>其他(选项中没有填写)：</label>
+                                  <input name="industry_qt" class="form-control" type="text" value="{{old('industry_qt')}}">
                                 </div>
                             </div>
                             <!-- 关系 -->
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">关系：</label>
                                 <div class="col-sm-8">
-                                    <input name="wx_char" class="form-control" type="text" value="{{old('wx_char')}}">
+                                  <select data-placeholder="选择关系" class="chosen-select" multiple style="width:100%;" tabindex="4" name="relation[]">
+                                    @foreach(config('hint.relation') as $relation)
+                                      <option value="{{$relation}}" hassubinfo="true">{{$relation}}</option>
+                                    @endforeach
+                                  </select>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label"></label>
+                                <div class="col-sm-8">
+                                  <label>其他(选项中没有填写)：</label>
+                                  <input name="relation_qt" class="form-control" type="text" value="{{old('relation_qt')}}">
                                 </div>
                             </div>
                             <!-- 合作过的项目 -->
@@ -155,21 +210,33 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">备注：</label>
                                 <div class="col-sm-8">
-                                     <textarea style="width: 100%;height: 100px;resize: none;" name="remarks">{{old('remarks')}}</textarea>
+                                     <textarea style="width: 100%;height: 100px;resize: none;" name="remark">{{old('remark')}}</textarea>
                                 </div>
                             </div>
                             <!-- 照片（多张） -->
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">照片（多张）：</label>
                                 <div class="col-sm-8">
-                                     <textarea style="width: 100%;height: 100px;resize: none;" name="remarks">{{old('remarks')}}</textarea>
+                                     <input type="file" name="picture[]" id="picture" multiple>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label"></label>
+                                <div class="col-sm-8" id="picture_yl">
+
                                 </div>
                             </div>
                             <!-- 名片 -->
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">名片：</label>
                                 <div class="col-sm-8">
-                                     <textarea style="width: 100%;height: 100px;resize: none;" name="remarks">{{old('remarks')}}</textarea>
+                                     <input type="file" name="visiting_card" >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label"></label>
+                                <div class="col-sm-8">
+                                     <img src="" alt="" id="visiting" class="pic">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -186,8 +253,12 @@
     </div>
     <script src="{{asset('hplus/js/plugins/layer/laydate/laydate.js')}}"></script>
     <script src="{{asset('hplus/js/plugins/chosen/chosen.jquery.js')}}"></script>
-    <!-- <script src="{{asset('hplus/js/demo/form-advanced-demo.min.js')}}"></script> -->
+    <script src="{{asset('js/distpicker.data.js')}}"></script>
+	  <script src="{{asset('js/distpicker.js')}}"></script>
+	  <!-- <script src="{{asset('js/main.js')}}"></script> -->
+
     <script type="text/javascript">
+      //select下拉多选
       var config = {
         ".chosen-select": {},
         ".chosen-select-deselect": {
@@ -204,5 +275,36 @@
         }
       };
       for (var selector in config) $(selector).chosen(config[selector]);
+
+      //三级联动
+      $('#distpicker1').distpicker();
+
+      //图片预览
+       function getObjectURL(file){
+           var url = null;
+           if (window.createObjectURL!=undefined) {
+             url = window.createObjectURL(file) ;
+            } else if (window.URL!=undefined) { // mozilla(firefox)
+             url = window.URL.createObjectURL(file) ;
+            } else if (window.webkitURL!=undefined) { // webkit or chrome
+             url = window.webkitURL.createObjectURL(file) ;
+            }
+            return url ;
+       }
+       //照片
+       $('#picture').change(function(){
+         var html = '';
+         for (var i = 0; i < this.files.length; i++) {
+            html += '<img src="'+getObjectURL(this.files[i])+'" class="pic">';
+         }
+
+         $('#picture_yl').html(html);
+       })
+       //名片图像
+       $('[name=visiting_card]').change(function(){
+         var imgurl = getObjectURL(this.files[0]);
+         $('#visiting').attr('src',imgurl);
+       })
+
     </script>
 @stop

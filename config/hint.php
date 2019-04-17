@@ -44,4 +44,7 @@ return [
     'HTTP'                  => ['ANY','GET','POST','PUT','DELETE','PATCH','HEAD','OPTIONS'],
     'important_grade'       => [1 => '普通',2 => '重要',3 => '非常重要'],
     'important_grade_color' => [1 => 'primary',2 => 'warning',3 => 'danger'],
+    'position'              => ['创始人','董事长','执行董事','总裁','CEO','总经理','股东'],
+    'industry'              => ['政府机关','金融','互联网','生产制造','教育','医疗','服务','农林牧副渔','能源'],
+    'relation'              => ['客户','校友','供应商','股东','导师','员工','媒介','用户'],
   ];

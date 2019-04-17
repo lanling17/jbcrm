@@ -4,7 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class file extends Model
+class File extends Model
 {
     //
+    protected $fillable = ['type','user_id','url'];
 }
