@@ -6,6 +6,12 @@
     width: 100px;
     margin-left: 10px;
   }
+  .divpic{
+    float:left;
+  }
+  .divpic p{
+    width:100%;text-align:center;line-height:30px;cursor:pointer;
+  }
 </style>
 
     <div class="wrapper wrapper-content animated fadeInRight">
@@ -34,8 +40,9 @@
                     </div>
                     @include('layouts.admin_hint')
                     <div class="ibox-content">
-                        <form action="{{url('client')}}" class="form-horizontal m-t" method="POST" enctype="multipart/form-data">
+                        <form action="{{url('client/'.$info['id'])}}" class="form-horizontal m-t" method="POST" enctype="multipart/form-data">
                           @csrf
+                          <input type="hidden" name="_method" value="put"/>
                             <!-- 姓名 -->
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">姓名：</label>
@@ -144,8 +151,8 @@
                             <div class="form-group">
                               <label class="col-sm-3 control-label"></label>
                               <div class="col-sm-8">
-                                <label>其他(国外地区填写格式：省-市-区/县)：</label>
-                                <input name="area_qt" class="form-control" type="text" value="{{old('area_qt')}}">
+                                <label>其他(若修改地区，删除此处的值)：</label>
+                                <input name="area_qt" class="form-control" type="text" value="{{$info['area']}}">
                               </div>
                             </div>
                             <!-- 联系地址 -->
@@ -223,20 +230,26 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label"></label>
                                 <div class="col-sm-8" id="picture_yl">
-
+                                  @foreach($info['picture'] as $picture)
+                                  <div class="divpic">
+                                    <img src="{{asset(str_replace('public','storage',$picture->url))}}" alt="" class="pic">
+                                    <p class="picture" fid="{{$picture->id}}">删除</p>
+                                  </div>
+                                  @endforeach
                                 </div>
                             </div>
                             <!-- 名片 -->
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">名片：</label>
                                 <div class="col-sm-8">
-                                     <input type="file" name="visiting_card" >
+                                  <input type="file" name="visiting_card" >
+                                  <input type="hidden" name="fid" value="{{isset($info['visiting_card']) ? $info['visiting_card']->id : ''}}">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label"></label>
                                 <div class="col-sm-8">
-                                     <img src="" alt="" id="visiting" class="pic">
+                                     <img src="{{isset($info['visiting_card']) ? asset(str_replace('public','storage',$info['visiting_card']->url)) : ''}}" alt="" id="visiting" class="pic">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -295,10 +308,13 @@
        $('#picture').change(function(){
          var html = '';
          for (var i = 0; i < this.files.length; i++) {
+            html += '<div class="divpic">';
             html += '<img src="'+getObjectURL(this.files[i])+'" class="pic">';
+            // html += '<p class="newpic" onclick="newpic('+i+')">删除</p></div>';
+            html += '<p> </p></div>';
          }
 
-         $('#picture_yl').html(html);
+         $('#picture_yl').append(html);
        })
        //名片图像
        $('[name=visiting_card]').change(function(){
@@ -306,5 +322,36 @@
          $('#visiting').attr('src',imgurl);
        })
 
+       //删除图片
+       $('.picture').click(function(){
+         var msg = confirm('确认删除？');
+         if (msg = true) {
+           var thisObj = $(this);
+           $.ajax({
+             url:"{{route('client/delPicture')}}",
+    	 				data:{fid:thisObj.attr('fid'),_token:'{{csrf_token()}}'},
+    	 				type:'POST',
+    	 				async:false,
+    	 				dataType:'json',
+    	 				success:function(d){
+                console.log(d)
+                if (d.code == '002') {
+                  thisObj.parent().remove();
+                }
+              }
+           });
+         }
+       });
+      //  $('.newpic').click(function(){
+      //    var file = $('#picture').val();
+      //    console.log(file);
+      //    alert(123)
+      //  })
+       function newpic(i) {
+            var file = document.querySelector('#picture').files;
+            var rs = delete file[i];
+            console.log(rs);
+            console.log(file);
+       }
     </script>
 @stop

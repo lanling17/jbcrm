@@ -33,8 +33,11 @@ Route::group(['middleware'=>'rbac'],function () use($router){
     Route::resource('client','Admin\ClientController');
     Route::resource('classify','Admin\ClassifyController');
 
+    Route::post('delPicture','Admin\ClientController@delPicture')->name('client/delPicture');   //删除图片
+
     Route::post('client/export','Admin\ClientController@export')->name('client/export');   //客户导出
     Route::post('client/import','Admin\ClientController@import')->name('client/import');   //客户导入
+
     //Excel控制器
     Route::get('/export', 'Admin\ExcelController@export')->name('export');
     Route::any('/import', 'Admin\ExcelController@import')->name('import');

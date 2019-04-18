@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
 use Excel;
+use Illuminate\Support\Facades\Storage;
 
 class ClientController extends Controller
 {
@@ -134,7 +135,7 @@ class ClientController extends Controller
                 $pictture['type'] = 1;
                 $pictture['user_id'] = $result->id;
                 foreach ($request->picture as $pic){
-                    $pictture['url'] = $pic->store('picture/'.$request->id);
+                    $pictture['url'] = $pic->store('public/picture/'.$result->id);
                     File::create($pictture);
                 }
 
@@ -143,7 +144,7 @@ class ClientController extends Controller
             if ($request->visiting_card){
                 $visiting_card['type'] = 2;
                 $visiting_card['user_id'] = $result->id;
-                $visiting_card['url'] = $request->visiting_card->store('visiting_card/'.$request->id);
+                $visiting_card['url'] = $request->visiting_card->store('public/visiting_card/'.$result->id);
                 File::create($visiting_card);
             }
 
@@ -173,33 +174,110 @@ class ClientController extends Controller
         $info['rjiao'] = array_intersect($relation,config('hint.relation'));
         $info['relation_qt'] = implode(',',array_diff($relation,$info['rjiao']));
 
-//        dd($info);
+        $info['picture'] = File::where('type',1)->where('user_id',$id)->get();
+        $info['visiting_card'] = File::where('type',2)->where('user_id',$id)->first();
         return view('client.edit',compact('classifies','info'));
     }
 
     //执行修改
     public function update(Request $request,$id){
-        $verif = ['classify_id'=>'required',
+        $verif = [
             'name' => 'required',
-            'contacts' => 'required',
             'sex' => 'required',
+            'birthday' => 'required',
+            'company_full' => 'required',
+            'company_short' => 'required',
             'email' => 'required',
-            'phone' => 'required',
-            'age' => 'required',
-            'company' => 'required',
-            'position' => 'required',
-            'out_lable' => 'required',
-            'in_lable' => 'required',
-            'nature' => 'required',
+            'telephone' => 'required|max:11',
             'wx_char' => 'required',
-            'important_grade' => 'required',
-            'remarks' => 'required',
-            'cooperationing' => 'required',
-            'cooperationed' => 'required',
-            'scale' => 'required'];
-        $credentials = $this->validate($request,$verif);
+            'address' => 'required',
+        ];
+        $message = [
+            'name.required' => '姓名 不能为空',
+            'birthday.required' => '生日 不能为空',
+            'company_full.required' => '公司全称 不能为空',
+            'company_short.required' => '公司简称 不能为空',
+            'telephone.required' => '联系电话 不能为空',
+            'wx_char.required' => '微信 不能为空',
+        ];
+        $credentials = $this->validate($request,$verif,$message);
+        $credentials = $this->validate($request,$verif,$message);
+        //公司
+        $credentials['company'] = $credentials['company_full'].','.$credentials['company_short'];
+        unset($credentials['company_full']);
+        unset($credentials['company_short']);
+        //职位
+        if ($request->position && $request->position_qt){
+            $credentials['position'] = implode(',',$request->position).','.$request->position_qt;
+        }elseif($request->position && !$request->position_qt){
+            $credentials['position'] = implode(',',$request->position);
+        }elseif(!$request->position && $request->position_qt){
+            $credentials['position'] = $request->position_qt;
+        }else{
+            return back()->with('hint','请选择职位或者填写');
+        }
+        //行业
+        if ($request->industry && $request->industry_qt){
+            $credentials['industry'] = implode(',',$request->industry).','.$request->position_qt;
+        }elseif($request->industry && !$request->industry_qt){
+            $credentials['industry'] = implode(',',$request->industry);
+        }elseif(!$request->industry && $request->industry_qt){
+            $credentials['industry'] = $request->industry_qt;
+        }else{
+            return back()->with('hint','请选择行业或者填写');
+        }
+        //关系
+        if ($request->relation && $request->relation_qt){
+            $credentials['relation'] = implode(',',$request->relation).','.$request->relation_qt;
+        }elseif($request->relation && !$request->relation_qt){
+            $credentials['relation'] = implode(',',$request->relation);
+        }elseif(!$request->relation && $request->relation_qt){
+            $credentials['relation'] = $request->relation_qt;
+        }else{
+            return back()->with('hint','请选择关系或者填写');
+        }
+        //地区
+        if ($request->area_qt){
+            $credentials['area'] = $request->area_qt;
+        }else{
+            $credentials['area'] = $request->province.'-'.$request->city.'-'.$request->district;
+        }
+        //可为空的字段 合作过中的项目，合作过的项目,备注
+        if ($request->cooperationing){
+            $credentials['cooperationing'] = $request->cooperationing;
+        }
+        if ($request->cooperationed){
+            $credentials['cooperationed'] = $request->cooperationed;
+        }
+        if ($request->remark){
+            $credentials['remark'] = $request->remark;
+        }
         $credentials['updated_id'] = Auth::id();
         if(Client::find($id)->update($credentials)){
+            //照片上传
+            if ($request->picture){
+                $pictture['type'] = 1;
+                $pictture['user_id'] = $id;
+                foreach ($request->picture as $pic){
+                    $pictture['url'] = $pic->store('public/picture/'.$id);
+                    File::create($pictture);
+                }
+
+            }
+            //名片上传
+            if ($request->visiting_card){
+                $visiting_card['url'] = $request->visiting_card->store('public/visiting_card/'.$id);
+                if ($request->fid){
+                    $file = File::find($request->fid);
+                    Storage::delete($file->url);
+                    $file->update($visiting_card);
+                }else{
+                    $visiting_card['type'] = 2;
+                    $visiting_card['user_id'] = $id;
+                    File::create($visiting_card);
+                }
+
+            }
             return redirect('client')->with('success', config('hint.mod_success'));
         }else{
             return back()->with('hint',config('hint.mod_failure'));
@@ -283,6 +361,21 @@ class ClientController extends Controller
                     $sheet->rows($listArray);
                 });
             })->export('xls');
+        }
+    }
+
+    //删除图片
+    public function delPicture(Request $request){
+        $file = File::find($request->fid);
+        if (!$file){
+            return response(['code'=>'001','msg'=>'该文件不存在']);
+        }
+
+        if (File::destroy($request->fid)){
+            Storage::delete($file->url);
+            return response(['code'=>'002','msg'=>'删除成功！']);
+        }else{
+            return response(['code'=>'003','msg'=>'删除失败，请稍后再试']);
         }
     }
 }
