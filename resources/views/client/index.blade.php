@@ -31,18 +31,17 @@
                     <div class="ibox-content">
                       <form action="">
                           <div class="form-group">
-                              <div class="col-sm-1 juzhong"><label class="dinwei">类別：</label></div>
+                              <div class="col-sm-1 juzhong"><label class="dinwei">字段：</label></div>
                               <div class="col-sm-2">
-                                  <select class="form-control" name="classify_id">
-                                      <option value="0">请选择分类</option>
-
-                                      <option value="" ></option>
-
+                                  <select class="form-control" name="field">
+                                      <option value="">请选择需要搜索的字段</option>
+                                      @foreach(config('hint.clients') as $key=>$client)
+                                      <option value="{{$key}}" {{$data['field']==$key ? 'selected' : ''}}>{{$client}}</option>
+                                      @endforeach
                                   </select>
                               </div>
-                              <div class="col-sm-1 juzhong"><label class="dinwei">姓名：</label></div>
                               <div class="col-sm-2">
-                                  <input class="form-control" type="text" name="name" value="">
+                                  <input class="form-control" type="text" name="value" value="{{$data['value']}}">
                               </div>
                               <button class="btn btn-primary" type="submit">搜索</button>
                           </div>
@@ -68,7 +67,7 @@
                                     <td>{{$v->name}}</td>
                                     <td>{{$v->sex ? '男' : '女'}}</td>
                                     <td>{{$v->birthday}}</td>
-                                     <td>{{$v->compony}}</td>
+                                     <td>{{$v->company}}</td>
                                     <td>{{$v->position}}</td>
                                     @if(Auth::id() == 1 || Auth::id() == $v->created_id)
                                     <td>{{$v->email}}</td>
@@ -137,9 +136,9 @@
         </div>
     </div>
     <form id="excel_export_form" action="{{route('client/export')}}" method="post">
-      <input type="text" name="classify_id" value="">
-      <input type="text" name="name" value="">
-      <input type="text" name="page" value="">
+      <input type="text" name="field" value="{{$data['field']}}">
+      <input type="text" name="value" value="{{$data['value']}}">
+      <input type="text" name="page" value="{{$data['page']}}">
       {{ csrf_field() }}
     </form>
     @include('layouts.admin_delete')

@@ -25,7 +25,6 @@ return [
     'del_success'           => '删除成功！',
     'del_failure'           => '删除失败！',
     'del_failure_exist'     => '删除失败,该层级下存在子级，请先删除子级后再试！',
-    'password_error'        => '密码错误！',
     'password_two'          => '密码两次输入不一致！',
     'detail_null'           => '暂无详情，请在操作中添加！',
     'detail_exist'          => '详情已经存在，无需再添加！',
@@ -47,4 +46,16 @@ return [
     'position'              => ['创始人','董事长','执行董事','总裁','CEO','总经理','股东'],
     'industry'              => ['政府机关','金融','互联网','生产制造','教育','医疗','服务','农林牧副渔','能源'],
     'relation'              => ['客户','校友','供应商','股东','导师','员工','媒介','用户'],
+    'clients'               => [
+                                'name'=>'姓名',
+                                'company'=>'公司',
+                                'position'=>'职位',
+                                'email'=>'邮箱',
+                                'telephone'=>'电话',
+                                'wx_char'=>'微信',
+                                'area'=>'地区',
+                                'address'=>'联系地址',
+                                'industry'=>'所在行业',
+                                'relation'=>'关系',
+                                ]
   ];

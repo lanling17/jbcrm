@@ -16,30 +16,15 @@ class ClientController extends Controller
 {
     //首页
     public function index(Request $request){
-//        $classify = Classify::all();
-        /*if ($request->all()){
-            $data['classify_id'] = $request->classify_id;
-            $data['name'] = $request->name;
-
-            if ($request->classify_id != 0 && $request->name != null){
-                $list = Client::where('classify_id',$request->classify_id)->where('name','LIKE','%'.$request->name.'%')->paginate(config('hint.a_num'));
-                $list->setPath(env('APP_URL').'/client?classify_id='.$data['classify_id'].'&name='.$data['name']);
-            }elseif($request->classify_id != 0 && $request->name == null){
-                $list = Client::where('classify_id',$request->classify_id)->paginate(config('hint.a_num'));
-                $list->setPath(env('APP_URL').'/client?classify_id='.$data['classify_id']);
-            }else{
-                $list = Client::where('name','LIKE','%'.$request->name.'%')->paginate(config('hint.a_num'));
-                $list->setPath(env('APP_URL').'/client?name='.$data['name']);
-            }
-
-        }else{
-            $data['classify_id'] = 0;
-            $data['name'] = null;
-            $data['page'] = 1;
-            $list = Client::paginate(config('hint.a_num'));
-        }*/
+        $data['field'] = $request->field;
+        $data['value'] = $request->value;
         $data['page'] = $request->page ? $request->page : 1;
-        $list = Client::paginate(20);
+        if ($data['field'] != null){
+            $list = Client::where($data['field'],'LIKE','%'.$data['value'].'%')->OrderBy('created_at','desc')->paginate(config('hint.a_num'));
+            $list->setPath(env('APP_URL').'/client?field='.$data['field'].'&value='.$data['value']);
+        }else{
+            $list = Client::Orderby('created_at','desc')->paginate(config('hint.a_num'));
+        }
         return view('client.index',compact('list','data'));
     }
 
@@ -286,6 +271,14 @@ class ClientController extends Controller
 
     //删除
     public function destroy($id){
+        $files = File::where('user_id',$id)->get()->toArray();
+        if ($files){
+            foreach($files as $file){
+                $fids[] = $file['id'];
+                Storage::delete($file['url']);
+            }
+            File::destroy($fids);
+        }
         if (Client::destroy($id)){
             return back() -> with('success',config('hint.del_success'));
         }else{
@@ -302,26 +295,25 @@ class ClientController extends Controller
             $num = 0;
             if ($results){
                 unset($results[0]);//去除表头
+
                 foreach ($results as $v){
                     $data = [];
-                    $data['classify_id'] = $v[0] == null ? '1':floor(trim($v[0]));
-                    $data['name'] = $v[3] == null ? '':trim($v[1]);
-                    $data['sex'] = floor(trim($v[2]));
-                    $data['email'] = $v[3] == null ? '空值':trim($v[3]);
-                    $data['phone'] = $v[4] == null ? '空值':floor(trim($v[4]));
-                    $data['age'] = $v[5] == floor(trim($v[5]));
-                    $data['nature'] = $v[6] == null ? '空值':trim($v[6]);
+                    $data['name'] = $v[0] == null ? '':trim($v[0]);
+                    $data['sex'] = floor(trim($v[1]));
+                    $birthday = explode('/',$v[2]);
+                    $data['birthday'] = $birthday[2].'-'.$birthday[0].'-'.$birthday[1];
+                    $data['company'] = $v[3] == null ? '空值':trim($v[3]);
+                    $data['position'] = $v[4] == null ? '空值':trim($v[4]);
+                    $data['email'] = $v[5] == null ? '空值':trim($v[5]);
+                    $data['telephone'] = floor(trim($v[6]));
                     $data['wx_char'] = $v[7] == null ? '空值':trim($v[7]);
-                    $data['company'] = $v[8] == null ? '空值':trim($v[8]);
-                    $data['position'] = $v[9] == null ? '空值':trim($v[9]);
-                    $data['contacts'] = $v[10] == null ? '空值':trim($v[10]);
-                    $data['important_grade'] = floor(trim($v[11]));
-                    $data['out_lable'] = $v[12] == null ? '空值':trim($v[12]);
-                    $data['in_lable'] = $v[13] == null ? '空值':trim($v[13]);
-                    $data['cooperationing'] = $v[14] == null ? '空值':trim($v[14]);
-                    $data['cooperationed'] = $v[15] == null ? '空值':trim($v[15]);
-                    $data['scale'] = $v[16] == null ? '空值':trim($v[16]);
-                    $data['remarks'] = $v[17] == null ? '空值':trim($v[17]);
+                    $data['area'] = $v[8] == null ? '空值':trim($v[8]);
+                    $data['address'] = $v[9] == null ? '空值':trim($v[9]);
+                    $data['industry'] = $v[10] == null ? '空值':trim($v[10]);
+                    $data['relation'] = $v[11] == null ? '空值':trim($v[11]);
+                    $data['cooperationing'] = $v[12] == null ? '空值':trim($v[12]);
+                    $data['cooperationed'] = $v[13] == null ? '空值':trim($v[13]);
+                    $data['remark'] = $v[14] == null ? '空值':trim($v[14]);
                     $data['created_id'] = Auth::id();
                     $data['updated_id'] = Auth::id();
                     if(Client::create($data)){
@@ -338,19 +330,15 @@ class ClientController extends Controller
 
     //导出
     public function export(Request $request){
-        $ify = $request->classify_id;
-        $name = $request->name;
+        $field = $request->field;
+        $value = $request->value;
         $page = $request->page;
 //        dd($ify,$name,$page);
         $start = $page * config('hint.a_num');
-        if ($ify != 0 && $name != null){
-            $list = Client::where('classify_id',$ify)->where('name','LIKE','%'.$name.'%')->limit($start,config('hint.a_num'))->get();
-        }elseif($ify != 0 && $name == null){
-            $list = Client::where('classify_id',$ify)->limit($start,config('hint.a_num'))->get();
-        }elseif($ify == 0 && $name == null){
-            $list = Client::where('name','LIKE','%'.$name.'%')->limit($start,config('hint.a_num'))->get();
+        if ($field != null){
+            $list = Client::where($field,'LIKE','%'.$value.'%')->OrderBy('created_at','desc')->limit($start,config('hint.a_num'))->get();
         }else{
-            $list = Client::limit($start,config('hint.a_num'))->get();
+            $list = Client::Orderby('created_at','desc')->limit($start,config('hint.a_num'))->get();
         }
         if ($list){
             $listArray = $list->toArray();
