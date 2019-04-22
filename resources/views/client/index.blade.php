@@ -136,9 +136,9 @@
         </div>
     </div>
     <form id="excel_export_form" action="{{route('client/export')}}" method="post">
-      <input type="text" name="field" value="{{$data['field']}}">
-      <input type="text" name="value" value="{{$data['value']}}">
-      <input type="text" name="page" value="{{$data['page']}}">
+      <input type="hidden" name="field" value="{{$data['field']}}">
+      <input type="hidden" name="value" value="{{$data['value']}}">
+      <input type="hidden" name="page" value="{{$data['page']}}">
       {{ csrf_field() }}
     </form>
     @include('layouts.admin_delete')

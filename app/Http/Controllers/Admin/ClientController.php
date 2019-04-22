@@ -30,7 +30,9 @@ class ClientController extends Controller
 
     //展示(单条)
     public function show(Client $client){
-        return view('client.show',compact('client'));
+        $files['pic'] = File::where('type',1)->where('user_id',$client->id)->get();
+        $files['visiting_card'] = File::where('type',2)->where('user_id',$client->id)->first();
+        return view('client.show',compact('client','files'));
     }
 
     //添加
